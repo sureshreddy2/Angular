@@ -4,21 +4,18 @@ FROM node:16
 # Set the working directory inside the container
 WORKDIR /app
 
-# Copy package.json and package-lock.json files to the container
+# Copy package.json and package-lock.json to the working directory
 COPY package*.json ./
 
-# Install project dependencies
+# Install dependencies
 RUN npm install
 
-# Copy the rest of the application code to the container
+# Copy the rest of the application code
 COPY . .
 
-# Build the Angular project
-RUN npm run build
+# Expose port 4200 to the outside world
+EXPOSE 4200
 
-# Expose port 3000
-EXPOSE 3000
-
-# Command to run the Angular application
-CMD ["npm", "start"]
+# Command to run the Angular development server with host binding
+CMD ["ng", "serve", "--host", "0.0.0.0"]
 
