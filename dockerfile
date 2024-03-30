@@ -17,4 +17,5 @@ COPY . .
 EXPOSE 4200
 
 # Command to run the Angular development server with host binding
+CMD ["ng", "serve", "--host", "0.0.0.0"]
 CMD ["npm", "start"]
