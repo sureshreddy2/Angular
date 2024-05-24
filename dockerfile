@@ -1,5 +1,5 @@
 # Use the official Node.js 16 image as base
-FROM node:16
+FROM node:18
 
 # Set the working directory inside the container
 WORKDIR /app
@@ -8,13 +8,17 @@ WORKDIR /app
 COPY package*.json ./
 
 # Install dependencies
+COPY..
 RUN npm install
+RUN ng build --configuration=production
 
-# Copy the rest of the application code
-COPY . .
+# Stage 2: Serve the Angular application using Nginx
+FROM nginx:alpine
+COPY --from=build /app/dist/angular-project /usr/share/nginx/html
+
 
 # Expose port 4200 to the outside world
-EXPOSE 4200
+EXPOSE 80
 
 # Command to run the Angular development server with host binding
-CMD ["npm", "start"]
+CMD ["nginx", "-g", "daemon off;"]
