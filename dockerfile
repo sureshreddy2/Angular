@@ -9,6 +9,7 @@ COPY package*.json ./
 
 # Install dependencies
 COPY..
+RUN npm install -g @angular/cli@12.2.8
 RUN npm install
 RUN ng build --configuration=production
 
