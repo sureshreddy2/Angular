@@ -1,15 +1,13 @@
 # Use the official Node.js 16 image as base
 FROM node:18
+# Install Angular CLI globally
+RUN npm install -g @angular/cli
 
 # Set the working directory inside the container
 WORKDIR /app
 
 # Copy package.json and package-lock.json to the working directory
 COPY package*.json ./
-
-# Install dependencies
-COPY..
-RUN npm install -g @angular/cli@12.2.8
 RUN npm install
 RUN ng build --configuration=production
 
