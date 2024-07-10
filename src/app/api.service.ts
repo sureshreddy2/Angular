@@ -1,15 +1,14 @@
-// api.service.ts
-
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { environment } from '../environments/environment'; // Make sure to import the environment file
 
 @Injectable({
   providedIn: 'root'
 })
 export class ApiService {
-  private apiUrl = 'http://backend_ip_or_hostname:5000/api'; // Replace with actual backend IP or hostname
+  private apiUrl = environment.apiUrl; // Use environment variable
 
   constructor(private http: HttpClient) { }
 
@@ -48,9 +47,18 @@ export class ApiService {
   }
 
   // Example method to handle errors
-  private handleError(error: any) {
+  private handleError(error: HttpErrorResponse) {
     console.error('API Error:', error);
-    return throwError(error);
+    // Customize error handling as needed
+    let errorMessage = 'Unknown error!';
+    if (error.error instanceof ErrorEvent) {
+      // Client-side error
+      errorMessage = `Error: ${error.error.message}`;
+    } else {
+      // Server-side error
+      errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
+    }
+    return throwError(errorMessage);
   }
 
   // Add more methods as needed for your application
